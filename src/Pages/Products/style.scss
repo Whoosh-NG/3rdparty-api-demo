@@ -1,0 +1,219 @@
+.productWrapper {
+  // aside {
+  //   height: auto;
+  //   min-height: 100vh;
+  //   padding: 2em 2em 0 2em;
+  //   background: var(--bgPryColor);
+  //   color: var(--white);
+
+  //   @media screen and (min-width: 768px) {
+  //     padding: 2em 1em 0 1em;
+  //   }
+  // }
+
+  .inputWrapper {
+    width: 100%;
+
+    small {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .selected {
+      border-radius: 36px;
+      background: var(--Grey5);
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--Grey2);
+      margin-top: 0.5em;
+      cursor: pointer;
+    }
+
+    @media screen and (min-width: 500px) {
+      width: 48%;
+    }
+  }
+
+  .upload {
+    // padding: 1.5em;
+    cursor: pointer;
+    border-radius: 50%;
+    border: solid 1px var(--Grey5);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--white);
+    small {
+      font-size: 8px;
+    }
+  }
+
+  .uploadInp {
+    display: none;
+  }
+
+  .uploadType {
+    font-size: 0.6rem;
+    color: var(--Grey2);
+    font-weight: 500;
+  }
+
+  .stepLabels {
+    padding-left: 2em;
+
+    .stepFormActive,
+    .stepFormInActive {
+      width: 20%;
+    }
+
+    .stepFormInActive {
+      h4 {
+        color: var(--Grey6);
+        font-weight: 700;
+      }
+
+      transition: all 2s ease-in-out;
+    }
+
+    .stepFormActive {
+      h4 {
+        color: var(--secColor);
+        font-weight: 700;
+      }
+      transition: all 2s ease-in-out;
+    }
+
+    @media screen and (min-width: 768px) {
+      padding-left: 1em;
+    }
+  }
+
+  .types {
+    .catSide {
+      /* border: 1px #FFA24F solid; */
+      box-shadow: 8px 5px 30px 0px #00000008;
+      border-radius: 0.875rem;
+      padding: 2rem;
+      background: color-mix(in sRGB, transparent 90%, var(--secColor) 10%);
+      width: 100%;
+      font-weight: 700;
+    }
+    .typeActive {
+      border: solid 1px;
+      border-color: color-mix(in sRGB, transparent 20%, var(--secColor) 80%);
+      font-weight: 700;
+
+      background: color-mix(in sRGB, transparent 90%, var(--secColor) 10%);
+    }
+  }
+
+  .support {
+    padding: 0.8em 2em;
+    font-size: 1rem;
+    font-weight: 600;
+    background: var(--pryDark);
+    border-radius: 30px;
+    color: var(--white);
+
+    .sIcon {
+      font-size: 1.5rem;
+      margin-right: 0.2em;
+    }
+  }
+
+  .productCatContainer {
+    .productCatCard {
+      // background: grey;
+      padding: 1em 0;
+      text-align: center;
+      border-radius: 8px;
+
+      p {
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .actionBtn {
+        font-size: 0.6rem;
+        font-weight: 500;
+        padding: 0.7em;
+        border-radius: 5px;
+        border: solid 1px var(--secColor);
+      }
+    }
+
+    #hotDrinks {
+      background: color-mix(in srgb, #3b23e6 10%, transparent 90%);
+
+      figure {
+        background: #ffe6e7;
+        border-radius: 50%;
+      }
+    }
+
+    #coldDrinks {
+      background: color-mix(in srgb, #0dba63 10%, transparent 90%);
+
+      figure {
+        background: #c8f1ff;
+        border-radius: 50%;
+      }
+    }
+    #nativeFoods {
+      background: color-mix(in srgb, #ffba09 10%, transparent 90%);
+
+      figure {
+        background: #b2ad96;
+        border-radius: 50%;
+      }
+    }
+    #frozenFoods {
+      background: color-mix(in srgb, #f80007 10%, transparent 90%);
+
+      figure {
+        background: #1dbc1a;
+        border-radius: 50%;
+      }
+    }
+    #bakedFoods {
+      background: #f1f0f8;
+
+      figure {
+        background: #ffd839;
+        border-radius: 50%;
+      }
+    }
+    #internationalDishes {
+      background: color-mix(in srgb, #18a0fb 10%, transparent 90%);
+
+      figure {
+        background: #4285f4;
+        border-radius: 50%;
+      }
+    }
+    #specialRecipe {
+      background: color-mix(in srgb, #18a0fb 10%, transparent 90%);
+
+      figure {
+        background: #e8f569;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .deliverySetup {
+    .deliveryPeriodLabel,
+    h5 {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--Grey5);
+    }
+  }
+}
+
+.support-i {
+  margin-top: 5.81rem;
+}
