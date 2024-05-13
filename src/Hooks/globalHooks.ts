@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import * as API from '../api/apis';
 import { useDispatch } from 'react-redux';
 import { toggleShow } from '../Redux/Features/globalSlice';
 import numeral from 'numeral';
@@ -71,26 +70,6 @@ export const useGlobalHooks = () => {
     return timePart;
   };
 
-  const uploadFilesToServer = async (file: any) => {
-    // get the upload file
-    if (file) {
-      // apend the uploaded file
-      const formData = new FormData();
-      formData.append('file', file);
-
-      // eslint-disable-next-line no-useless-catch
-      try {
-        // Add it to the endpoint body
-        const resp = await API.uploadFiles(formData);
-
-        // return the response and used as wished
-        return resp;
-      } catch (error) {
-        throw error;
-      }
-    }
-  };
-
   // Search function
   const handleSearch = (
     data: any[],
@@ -147,7 +126,6 @@ export const useGlobalHooks = () => {
     formatTime,
     open,
     setOpen,
-    uploadFilesToServer,
     handleSearch,
     handleCandidateSearch,
   };

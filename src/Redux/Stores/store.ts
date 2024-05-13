@@ -1,7 +1,5 @@
 import { AnyAction, combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import { apiSLice } from '../../api/apiSlice';
-
 import {
   persistStore,
   persistReducer,
@@ -16,20 +14,11 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import globalSlice from '../Features/globalSlice';
-import userAuthSlice from '../Features/userAuthSlice';
-import userDatasSlice from '../Features/userDatasSlice';
-import courseSlice from '../Features/courseSlice';
-import notifsSlice from '../Features/notifsSlice';
 import onboardingSlice from '../Features/onboardingSlice';
 
 const rootReducers = combineReducers({
-  notifsSlice,
   globalSlice,
-  courseSlice,
-  userAuthSlice,
-  userDatasSlice,
   onboardingSlice,
-  [apiSLice.reducerPath]: apiSLice.reducer,
 });
 
 const persistConfig = {
@@ -51,7 +40,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(apiSLice.middleware),
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

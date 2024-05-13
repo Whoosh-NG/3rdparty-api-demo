@@ -3,6 +3,7 @@ import { FaRegClock } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
 import './style.scss';
 import DeliverySetup from '@/components/DeliverySetup';
+import GoBackBtn from '@/components/GoBackBtn';
 
 const Products = () => {
   const params = useParams();
@@ -19,6 +20,7 @@ const Products = () => {
       </Link>
       <hr />
 
+      <GoBackBtn className='outline-btn mt-5' />
       <section className='  flex flex-wrap justify-between gap-3 my-10'>
         <article className='w-full md:w-[40%] bg-[var(--pryColor)] p-4 shadow-md rounded-lg'>
           <figure className='h-[351px] rounded-lg overflow-hidden'>

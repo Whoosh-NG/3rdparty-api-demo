@@ -1,10 +1,4 @@
 import { ReactNode } from 'react';
-import {
-  IBankDetails,
-  IBankDetailsStepform,
-  IDeliverySetup,
-  IStoreSetupForm,
-} from './OnboardingInterfaces';
 
 export interface TabProps {
   id: string;
@@ -55,16 +49,4 @@ export interface IStoreSetup {
 export interface IModal {
   id: string;
   close?: () => void;
-}
-
-export interface ICurrentUser
-  extends IStoreSetupForm,
-    IBankDetailsStepform,
-    IDeliverySetup {
-  delivery: IDeliverySetup;
-  bank: IBankDetails;
-  sellerCategs: {
-    id: number;
-    vendaCategory: { name: string };
-  }[];
 }
