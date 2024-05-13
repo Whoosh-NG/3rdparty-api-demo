@@ -1,0 +1,39 @@
+.subPage {
+  background-color: #fff;
+  border-radius: 30px;
+  span {
+    color: var(--pryColor);
+  }
+  .pageContent {
+    padding: 3em 2em;
+    .inputWrapper {
+      margin-bottom: 1em;
+    }
+
+    .formWrap {
+      padding: 3em 6em;
+    }
+    .card {
+      background: transparent !important;
+    }
+  }
+  .success {
+    color: var(--pryColor);
+  }
+  img {
+    height: auto;
+  }
+
+  .moreInfo {
+    p {
+      font-size: 0.7rem;
+      line-height: 20px;
+    }
+    span,
+    a {
+      font-size: 0.7rem;
+      color: var(--pryColor);
+      line-height: 15px;
+    }
+  }
+}

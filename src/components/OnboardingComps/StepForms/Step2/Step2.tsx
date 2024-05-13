@@ -16,7 +16,7 @@ const Step2: React.FC<IStepForm> = ({ onNext, onPrevious }) => {
   return (
     <main>
       <header className='mb-4'>
-        <h1>Select your shipping type</h1>
+        <h1>Send and Receive</h1>
       </header>
 
       <hr />

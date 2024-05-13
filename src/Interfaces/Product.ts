@@ -1,12 +1,13 @@
-// export interface IProductList {
-//   id: string | number;
-//   title: string;
-//   productImage: string;
-//   status: string;
-//   price: number;
-//   description: string;
-//   deliveryTime: string;
-// }
+export interface IProductList {
+  id: string | number;
+  name: string;
+  productImage: string;
+  status: string;
+  value: number;
+  description: string;
+  deliveryTime: string;
+  weight: string;
+}
 export interface IProductTemp {
   id: string | number;
   name: string;

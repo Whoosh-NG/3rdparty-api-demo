@@ -1,17 +1,22 @@
 export interface IStoreSetupForm {
-  bannerUrl?: string;
-  logoUrl?: string;
-  storeEmail: string;
-  phoneNumber?: number | string;
-  storeName: string;
-  website?: string;
-  description?: string;
-  vendaCategoryId: string;
-  apartment?: string | number;
-  city?: string;
-  province?: string;
-  postalCode?: string | number;
-  displayNumEmail?: boolean;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  pickup_address: string;
+
+  // pickup_details: {
+  //   first_name: string;
+  //   last_name: string;
+  //   phone_number: string;
+  //   pickup_address: string;
+  // };
+
+  // dropoff_details: {
+  //   first_name: string;
+  //   last_name: string;
+  //   phone_number: string;
+  //   dropoff_address: string;
+  // };
 }
 
 export interface IBankDetailsStepform {
@@ -25,17 +30,18 @@ export interface IBankDetailsStepform {
 }
 
 export interface IStoreProductCats {
-  subCategoryId: number;
-  // name: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  dropoff_address: string;
 }
 export interface IDeliverySetup {
-  allowPickup: string;
-  allowPreOrder: string;
-  storeStatus: string;
-  deliveryFee: number;
-  deliveryPeriod?: string;
-  pickupTimeFrom: Date;
-  pickupTimeTo: Date;
+  name: string;
+  value: string;
+  quantity: string;
+  carrier_type: string;
+  description: string;
+  weight: string;
 }
 export interface IBankDetails {
   fullName: string;

@@ -8,13 +8,13 @@ const Home = () => {
       <hr />
 
       <ul className='flex flex-wrap gap-5 mt-10 justify-between'>
-        {productData.map(({ id, title, price, description, productImage }) => (
+        {productData.map(({ id, name, value, description, productImage }) => (
           <li key={id} className='w-full md:w-[47%] lg:w-[30%]'>
             <ProductCard
               id={id}
-              title={title}
+              title={name}
               productImage={productImage}
-              price={price}
+              price={value}
               description={description}
             />
           </li>

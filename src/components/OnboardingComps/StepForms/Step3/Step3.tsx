@@ -1,286 +1,202 @@
-/* eslint @typescript-eslint/no-explicit-any: "off" */
-
-import React, { useState } from 'react';
+import React from 'react';
 import { IStepForm } from '@/Interfaces/GlobalInterfaces';
-import FormInput from '@/components/FormInput';
-import PriceInput from '@/components/PriceInput';
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch, useAppSelector } from '@/Redux/reduxHooks';
+import FormInput from '@/components/FormInput';
 import {
   SelectStepperForms,
-  updateDeliverySetup,
+  updatePickup,
 } from '@/Redux/Features/onboardingSlice';
-import { useAddDeliverySetupMutation } from '@/api/apiSlice';
-import Spinner from '@/spinner/Spinner';
-import { useSweetAlert } from '@/Hooks/useSweetAlert';
-import { useGlobalHooks } from '@/Hooks/globalHooks';
-import { IServerError } from '@/Interfaces/OnboardingInterfaces';
-import ErrorMessage from '@/components/ErrorMessage';
 
-const initialValues = {
-  allowPickup: '',
-  allowPreOrder: '',
-  storeStatus: '',
-  deliveryFee: '',
-  deliveryPeriod: '',
-  pickupTimeFrom: '',
-  pickupTimeTo: '',
-};
+// const initialValues = {
+//   first_name: '',
+//   last_name: '',
+//   phone_number: '',
+//   pickup_address: '',
+// };
+
+// const initialValues = {
+//   pickup_details: {
+//     first_name: '',
+//     last_name: '',
+//     phone_number: '',
+//     pickup_address: '',
+//   },
+
+//   dropoff_details: {
+//     first_name: '',
+//     last_name: '',
+//     phone_number: '',
+//     dropoff_address: '',
+//   },
+// };
 
 const Step3: React.FC<IStepForm> = ({ onNext, onPrevious }) => {
   const dispatch = useAppDispatch();
-  const { showAlert } = useSweetAlert();
-  const { errors: customErrors, setErrors } = useGlobalHooks();
+  const { pickupDetails } = useAppSelector(SelectStepperForms);
 
-  const { deliverySetup } = useAppSelector(SelectStepperForms);
+  const onSubmit = (formData: any) => {
+    dispatch(updatePickup(formData));
+    onNext();
+  };
+  console.log(pickupDetails);
+  const reduxStoreetup = Object.keys(pickupDetails).length > 0 && pickupDetails;
 
-  const [addDeliveryDetails, { isLoading }] = useAddDeliverySetupMutation();
-
-  const [preOrderBtn, setPreOrderBtn] = useState<{ [key: string]: boolean }>(
-    { [deliverySetup.allowPreOrder]: true } || {},
-  );
-
-  const [togglePickBtn, setTogglePickBtn] = useState<{
-    [key: string]: boolean;
-  }>({ [deliverySetup.allowPickup]: true } || {});
-
-  const [storeStatus, setStoreStatus] = useState<{
-    [key: string]: boolean;
-  }>({ [deliverySetup.storeStatus]: true } || {});
-
-  const onSubmit = async (formData: any) => {
-    // console.log(formData);
-
-    dispatch(updateDeliverySetup(formData));
-
-    try {
-      const rsp = await addDeliveryDetails(formData);
-      console.log(rsp);
-
-      if ('data' in rsp) {
-        showAlert(rsp?.data?.message);
-        onNext();
-      } else if ('error' in rsp) {
-        setErrors({
-          error: true,
-          errMessage: (rsp.error as IServerError).data.message,
-        });
-        onNext();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const initialValues = reduxStoreetup || {
+    first_name: '',
+    last_name: '',
+    phone_number: '',
+    pickup_address: '',
   };
 
   const signInSchema = Yup.object().shape({
-    deliveryPeriod: Yup.string().required('Delivery Period is required'),
-    pickupTimeFrom: Yup.string().required('From is required'),
-    pickupTimeTo: Yup.string().required('To is required'),
+    first_name: Yup.string().required('First name is required'),
+    last_name: Yup.string().required('Last name is required'),
+    phone_number: Yup.string().required('Phone number is required'),
+    pickup_address: Yup.string().required('Address is required'),
   });
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
     useFormik({
-      initialValues: deliverySetup || initialValues,
+      initialValues: initialValues,
       validationSchema: signInSchema,
       onSubmit,
     });
 
-  const handlePreOrder = (id: string) => {
-    setPreOrderBtn((prev) => ({
-      [id]: !prev[id],
-    }));
-    handleChange({
-      target: {
-        name: 'allowPreOrder',
-        value: id,
-      },
-    });
-  };
-
-  const handleStoreStatus = (id: string) => {
-    setStoreStatus((prev) => ({ [id]: !prev[id] }));
-    handleChange({
-      target: {
-        name: 'storeStatus',
-        value: id,
-      },
-    });
-  };
-
-  const handlePickUpDelivery = (id: string, val: string) => {
-    setTogglePickBtn((prev) => ({ [id]: !prev[id] }));
-
-    handleChange({
-      target: {
-        name: 'allowPickup',
-        value: val,
-      },
-    });
-  };
-
-  // console.log('redux:', deliverySetup);
-
   return (
     <form className='deliverySetup' onSubmit={handleSubmit}>
-      <header className='mb-10'>
-        <h1>Delivery Setup</h1>
-        <p className='my-3'>Set up your delivery details and methods</p>
+      <header className='mb-4'>
+        <h1>Send and Receive</h1>
       </header>
 
-      <section>
-        <article className='flex flex-wrap items-center justify-between mb-7 w-full md:w-10/12'>
-          <h5>Do you allow pick-up delivery?</h5>
-          <div className='flex items-center gap-3'>
-            <button
-              type='button'
-              id='Yes'
-              onClick={() => handlePickUpDelivery('Yes', 'Yes')}
-              className={togglePickBtn['Yes'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              Yes, I do
-            </button>
-            <button
-              type='button'
-              id='No'
-              onClick={() => handlePickUpDelivery('No', 'No')}
-              className={togglePickBtn['No'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              No, I don&apos;t
-            </button>
-          </div>
-        </article>{' '}
-        <article className='flex flex-wrap items-center justify-between mb-5 w-full md:w-11/12 '>
-          <h5>Do you allow Pre-order of Products?</h5>
-          <div className='flex items-center gap-3'>
-            <button
-              type='button'
-              id='Yes'
-              onClick={() => handlePreOrder('Yes')}
-              className={preOrderBtn['Yes'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              Yes, I do
-            </button>
-            <button
-              type='button'
-              id='No'
-              onClick={() => handlePreOrder('No')}
-              className={preOrderBtn['No'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              No, I don&apos;t
-            </button>
-          </div>
-        </article>
-        <article className='my-[50px]'>
-          <h5 className='mb-5'>What is your Pickup or Delivery Time?</h5>
+      <hr />
 
-          <FormInput
-            id='deliveryPeriod'
-            name='deliveryPeriod'
-            type='text'
-            placeholder='input your response here'
-            onChange={handleChange}
-            defaultValue={values.deliveryPeriod}
-            onBlur={handleBlur}
-            error={touched.deliveryPeriod && errors.deliveryPeriod}
-          />
-        </article>
-        <article className='my-[50px]'>
-          <h5 className='mb-5'>What is your Pickup or Delivery Time?</h5>
-
-          <div className='flex flex-wrap gap-5'>
+      <article className=' my-5'>
+        <h3>Sender Information</h3>
+        <section className='flex flex-wrap gap-3 justify-between mt-2'>
+          <article className='inputWrapper'>
             <FormInput
-              id='pickupTimeFrom'
-              name='pickupTimeFrom'
-              type='time'
-              placeholder='09:30'
-              className={'inputWrapper'}
-              label='FROM'
+              id='first_name'
+              name='first_name'
+              type='text'
+              placeholder='input your response here'
+              label='First Name'
               onChange={handleChange}
-              DateTimeValue={values.pickupTimeFrom}
+              defaultValue={values.first_name}
               onBlur={handleBlur}
-              error={touched.pickupTimeFrom && Boolean(errors.pickupTimeFrom)}
+              error={touched.first_name && errors.first_name}
             />
+          </article>
+          <article className='inputWrapper'>
             <FormInput
-              id='pickupTimeTo'
-              name='pickupTimeTo'
-              type='time'
-              placeholder='08:00'
-              className={'inputWrapper'}
-              label='TO'
-              DateTimeValue={values.pickupTimeTo}
+              id='last_name'
+              name='last_name'
+              type='text'
+              label='Last Name'
+              placeholder='input your response here'
               onChange={handleChange}
+              defaultValue={values.last_name}
               onBlur={handleBlur}
-              error={touched.pickupTimeTo && Boolean(errors.pickupTimeTo)}
+              error={touched.last_name && errors.last_name}
             />
-          </div>
-        </article>
-        <article className='flex flex-wrap items-center justify-between mb-5 '>
-          <h5>Select Store Status</h5>
-          <div className='flex items-center gap-3'>
-            <button
-              type='button'
-              id='Taking Orders'
-              onClick={() => handleStoreStatus('Taking Orders')}
-              className={storeStatus['Taking Orders'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              Taking Orders Now
-            </button>
-            <button
-              type='button'
-              id='Pre-Order'
-              onClick={() => handleStoreStatus('Pre-Order')}
-              className={storeStatus['Pre-Order'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              Pre-Order Only
-            </button>
-            <button
-              type='button'
-              id='Closed'
-              onClick={() => handleStoreStatus('Closed')}
-              className={storeStatus['Closed'] ? 'doBtn' : 'dontDoBtn'}
-            >
-              Closed
-            </button>
-          </div>
-        </article>
-        <article className='flex flex-wrap items-center gap-4 mt-10'>
-          <div className='w-full md:w-5/12'>
-            <h5>Set Delivery Fee</h5>
-            <small className='text-[var(--Grey5)]'>
-              P.S. You can always change this later
-            </small>
-          </div>
-          <div className='w-full md:w-3/12'>
-            <PriceInput
-              id='deliveryFee'
-              name='deliveryFee'
-              onChange={(e) =>
-                handleChange({
-                  target: {
-                    name: 'deliveryFee',
-                    value: parseFloat(e.target.value),
-                  },
-                })
-              }
-              defaultValue={values.deliveryFee}
+          </article>
+          <article className='inputWrapper'>
+            <FormInput
+              id='phone_number'
+              name='phone_number'
+              type='text'
+              label='Phone Number'
+              placeholder='input your response here'
+              onChange={handleChange}
+              defaultValue={values.phone_number}
+              onBlur={handleBlur}
+              error={touched.phone_number && errors.phone_number}
             />
-          </div>
-        </article>
-      </section>
+          </article>
+          <article className='inputWrapper'>
+            <FormInput
+              id='pickup_address'
+              name='pickup_address'
+              type='text'
+              label='Pickup Address'
+              placeholder='input your response here'
+              onChange={handleChange}
+              defaultValue={values.pickup_address}
+              onBlur={handleBlur}
+              error={touched.pickup_address && errors.pickup_address}
+            />
+          </article>
+        </section>
+      </article>
 
-      <div className='flex justify-center my-5'>
-        {customErrors.error && (
-          <ErrorMessage message={customErrors.errMessage} />
-        )}
-      </div>
+      <hr />
+
+      {/* <article className=' my-5'>
+        <h3>Receiver Information</h3>
+        <section className='flex flex-wrap gap-3 justify-between mt-2'>
+          <article className='inputWrapper'>
+            <FormInput
+              id='first_name'
+              name='first_name'
+              type='text'
+              placeholder='input your response here'
+              label='First Name'
+              onChange={handleChange}
+              defaultValue={values.first_name}
+              onBlur={handleBlur}
+              error={touched.first_name && errors.first_name}
+            />
+          </article>
+          <article className='inputWrapper'>
+            <FormInput
+              id='last_name'
+              name='last_name'
+              type='text'
+              label='Last Name'
+              placeholder='input your response here'
+              onChange={handleChange}
+              defaultValue={values.last_name}
+              onBlur={handleBlur}
+              error={touched.last_name && errors.last_name}
+            />
+          </article>
+          <article className='inputWrapper'>
+            <FormInput
+              id='phone_number'
+              name='phone_number'
+              type='text'
+              label='Phone Number'
+              placeholder='input your response here'
+              onChange={handleChange}
+              defaultValue={values.phone_number}
+              onBlur={handleBlur}
+              error={touched.phone_number && errors.phone_number}
+            />
+          </article>
+          <article className='inputWrapper'>
+            <FormInput
+              id='pickup_address'
+              name='dropoff_address'
+              type='text'
+              label='Dropoff Address'
+              placeholder='input your response here'
+              onChange={handleChange}
+              defaultValue={values.dropoff_address}
+              onBlur={handleBlur}
+              error={touched.dropoff_address && errors.dropoff_address}
+            />
+          </article>
+        </section>
+      </article> */}
 
       <section className='flex items-center justify-between mt-9'>
         <button onClick={onPrevious} className='outline-btn'>
           PREVIOUS
         </button>{' '}
         <button className='main-btn' type='submit'>
-          {isLoading ? <Spinner /> : ' SAVE AND CONTINUE'}
+          CONTINUE
         </button>
       </section>
     </form>

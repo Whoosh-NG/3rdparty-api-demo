@@ -259,7 +259,7 @@ select {
 .main-btn {
   background: var(--pryColor);
   border-radius: 4px;
-  padding: 0.6em 2em;
+  padding: 0.4em 1em;
   font-size: 1rem;
   font-weight: 600;
   color: var(--white);

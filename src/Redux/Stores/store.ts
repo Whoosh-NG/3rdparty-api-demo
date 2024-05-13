@@ -33,7 +33,7 @@ const rootReducers = combineReducers({
 });
 
 const persistConfig = {
-  key: 'LocalVendaSeller',
+  key: 'APITest',
   storage,
 };
 

@@ -51,7 +51,9 @@ const StepForm = () => {
           {currentStep === 3 && (
             <Step4 onPrevious={handlePrevious} onNext={handleNext} />
           )}
-          {currentStep === 4 && <Step5 onPrevious={handlePrevious} />}
+          {currentStep === 4 && (
+            <Step5 onPrevious={handlePrevious} onNext={handleNext} />
+          )}
         </article>
       </section>
     </main>

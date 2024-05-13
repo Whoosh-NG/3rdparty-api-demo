@@ -11,9 +11,9 @@ const onboardingSlice = createSlice({
   name: 'formData',
   initialState: {
     stepperForms: {
-      storeSetup: {} as IStoreSetupForm,
-      storeProductCats: [] as IStoreProductCats[],
-      deliverySetup: {} as IDeliverySetup,
+      pickupDetails: {} as IStoreSetupForm,
+      dropoffDetails: {} as IStoreProductCats,
+      orderDetails: {} as IDeliverySetup,
       bankDetails: {} as IBankDetails,
       // list of boolean keys
       productCatIsAdded: {} as { [key: string]: boolean },
@@ -24,24 +24,24 @@ const onboardingSlice = createSlice({
   },
 
   reducers: {
-    updateStoreSetup: (state, action) => {
-      state.stepperForms.storeSetup = action.payload;
+    updatePickup: (state, action) => {
+      state.stepperForms.pickupDetails = action.payload;
     },
 
     saveFileName: (state, action) => {
       state.fileName = action.payload;
     },
 
-    updateProductCat: (state, action) => {
-      state.stepperForms.storeProductCats = action.payload;
+    updateDropOff: (state, action) => {
+      state.stepperForms.dropoffDetails = action.payload;
     },
 
     updateIsAdded: (state, action) => {
       state.stepperForms.productCatIsAdded = action.payload;
     },
 
-    updateDeliverySetup: (state, action) => {
-      state.stepperForms.deliverySetup = action.payload;
+    updateOrderDetails: (state, action) => {
+      state.stepperForms.orderDetails = action.payload;
     },
 
     updateBankDetails: (state, action) => {
@@ -59,9 +59,9 @@ const onboardingSlice = createSlice({
 });
 
 export const {
-  updateStoreSetup,
-  updateDeliverySetup,
-  updateProductCat,
+  updatePickup,
+  updateOrderDetails,
+  updateDropOff,
   saveFileName,
   isUserOnboarded,
   updateSessionDuration,
