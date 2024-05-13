@@ -185,7 +185,7 @@ const DeliverySetup = ({ productData }: any) => {
                 id='dropoff_address'
                 name='dropoff_address'
                 type='text'
-                label='Pickup Address'
+                label='Delivery Address'
                 placeholder='input your response here'
                 onChange={handleChange}
                 defaultValue={values.dropoff_address}
