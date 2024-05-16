@@ -17,7 +17,7 @@ export interface TabContentsProps {
 }
 
 export interface IStepForm {
-  onNext: () => void;
+  onNext?: () => void;
   onPrevious?: () => void;
 }
 

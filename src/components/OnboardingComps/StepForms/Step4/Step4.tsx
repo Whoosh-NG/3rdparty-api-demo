@@ -1,103 +1,72 @@
 import React from 'react';
 import { IStepForm } from '@/Interfaces/GlobalInterfaces';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useAppDispatch, useAppSelector } from '@/Redux/reduxHooks';
-import FormInput from '@/components/FormInput';
-import {
-  SelectStepperForms,
-  updateDropOff,
-} from '@/Redux/Features/onboardingSlice';
 
-const Step4: React.FC<IStepForm> = ({ onNext, onPrevious }) => {
-  const dispatch = useAppDispatch();
-  const { dropoffDetails } = useAppSelector(SelectStepperForms);
+import { useAppSelector } from '@/Redux/reduxHooks';
 
-  const onSubmit = (formData: any) => {
-    dispatch(updateDropOff(formData));
-    onNext();
+import { SelectStepperForms } from '@/Redux/Features/onboardingSlice';
+import { useGlobalHooks } from '@/Hooks/globalHooks';
+import { useNavigate } from 'react-router-dom';
+
+const Step4: React.FC<IStepForm> = ({ onPrevious }) => {
+  const { orderedData } = useAppSelector(SelectStepperForms);
+  const { setLoading, loading } = useGlobalHooks();
+  const navigate = useNavigate();
+
+  const subTotal = Number(orderedData.value) * Number(orderedData.quantity);
+  const total = subTotal + orderedData?.serverRsp?.data?.total;
+
+  const handlePayNow = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate('/success');
+    }, 1000);
   };
-
-  const reduxStoreetup =
-    Object.keys(dropoffDetails).length > 0 && dropoffDetails;
-
-  const initialValues = reduxStoreetup || {
-    first_name: '',
-    last_name: '',
-    phone_number: '',
-    dropoff_address: '',
-  };
-
-  const signInSchema = Yup.object().shape({
-    first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    phone_number: Yup.string().required('Phone number is required'),
-    dropoff_address: Yup.string().required('Address is required'),
-  });
-
-  const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: signInSchema,
-      onSubmit,
-    });
 
   return (
-    <form className='deliverySetup' onSubmit={handleSubmit}>
+    <main className='deliverySetup'>
       <article className=' my-5'>
-        <h3>Receiver Information</h3>
-        <section className='flex flex-wrap gap-3 justify-between mt-2'>
-          <article className='inputWrapper'>
-            <FormInput
-              id='first_name'
-              name='first_name'
-              type='text'
-              placeholder='input your response here'
-              label='First Name'
-              onChange={handleChange}
-              defaultValue={values.first_name}
-              onBlur={handleBlur}
-              error={touched.first_name && errors.first_name}
-            />
+        <h3>Order Details</h3>
+        <hr />
+        <section className='mt-5'>
+          <article className='flex items-center justify-between'>
+            <div className='  w-4/12'>
+              <p>Items</p>
+            </div>
+            <div className='text-center w-3/12'>
+              <p>Qty</p>
+            </div>
+            <div className='text-end w-4/12'>
+              <p>Price(₦)</p>
+            </div>
           </article>
-          <article className='inputWrapper'>
-            <FormInput
-              id='last_name'
-              name='last_name'
-              type='text'
-              label='Last Name'
-              placeholder='input your response here'
-              onChange={handleChange}
-              defaultValue={values.last_name}
-              onBlur={handleBlur}
-              error={touched.last_name && errors.last_name}
-            />
+          <article className='flex items-center justify-between mb-5'>
+            <div className='  w-4/12'>
+              <p>{orderedData?.name}</p>
+            </div>
+            <div className='text-center w-3/12'>
+              <p>{orderedData?.quantity} </p>
+            </div>
+            <div className='text-end w-4/12'>
+              <p> ₦{Number(orderedData?.value).toFixed(2)} </p>
+            </div>
           </article>
-          <article className='inputWrapper'>
-            <FormInput
-              id='phone_number'
-              name='phone_number'
-              type='text'
-              label='Phone Number'
-              placeholder='input your response here'
-              onChange={handleChange}
-              defaultValue={values.phone_number}
-              onBlur={handleBlur}
-              error={touched.phone_number && errors.phone_number}
-            />
-          </article>
-          <article className='inputWrapper'>
-            <FormInput
-              id='pickup_address'
-              name='dropoff_address'
-              type='text'
-              label='Dropoff Address'
-              placeholder='input your response here'
-              onChange={handleChange}
-              defaultValue={values.dropoff_address}
-              onBlur={handleBlur}
-              error={touched.dropoff_address && errors.dropoff_address}
-            />
+          <hr />
+          <article className=' my-5'>
+            <div className='flex items-center justify-between my-1'>
+              <p>Sub Total</p>
+              <h4>₦{subTotal.toFixed(2)}</h4>
+            </div>
+
+            <div className='flex items-center justify-between my-1'>
+              <p>Delivery Fee</p>
+              <h4>₦{orderedData?.serverRsp?.data?.total.toFixed(2)}</h4>
+            </div>
+
+            <div className='flex items-center justify-between my-1'>
+              <p>Total</p>
+              <h4>₦{total}</h4>
+            </div>
           </article>
         </section>
       </article>
@@ -106,9 +75,12 @@ const Step4: React.FC<IStepForm> = ({ onNext, onPrevious }) => {
         <button onClick={onPrevious} className='outline-btn'>
           PREVIOUS
         </button>{' '}
-        <button className='main-btn'>CONTINUE</button>
+        <button disabled={loading} className='main-btn' onClick={handlePayNow}>
+          {' '}
+          {loading ? 'Processing...' : 'Pay Now'}
+        </button>
       </section>
-    </form>
+    </main>
   );
 };
 

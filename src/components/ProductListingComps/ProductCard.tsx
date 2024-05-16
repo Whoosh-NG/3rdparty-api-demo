@@ -48,7 +48,7 @@ const ProductCard: React.FC<IProduct> = ({
 
           <div className='flex justify-between items-center'>
             <button className='bg-[#EDEEF2] py-[4px] px-[10px] rounded-full text-[14px] text-[var(--Grey2)] main-btn'>
-              Buy Now
+              Add to cart
             </button>
             <p className='text-[var(--pryColor)] text-[10px] flex gap-2 items-center font-semibold mt-1'>
               {' '}

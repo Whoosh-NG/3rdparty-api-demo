@@ -1,24 +1,37 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useAppSelector } from '@/Redux/reduxHooks';
+import { useAppDispatch, useAppSelector } from '@/Redux/reduxHooks';
 import FormInput from '@/components/FormInput';
-import { SelectStepperForms } from '@/Redux/Features/onboardingSlice';
+import {
+  SelectStepperForms,
+  updateOrderedData,
+} from '@/Redux/Features/onboardingSlice';
 import { useState } from 'react';
-import { selectGlobal } from '@/Redux/Features/globalSlice';
-import { useGlobalHooks } from '@/Hooks/globalHooks';
-import Success from './success/Success';
+// import { selectGlobal } from '@/Redux/Features/globalSlice';
+// import { useGlobalHooks } from '@/Hooks/globalHooks';
+// import Success from './success/Success';
 
-interface IOrder {
-  delivery_fee: number;
-  vat: number;
-  total: number;
+// interface IOrder {
+//   delivery_fee: number;
+//   vat: number;
+//   total: number;
+// }
+interface IModal {
+  productData?: any;
+  onNext: () => void;
+  onPrevious: () => void;
 }
 
 export const baseUrl = 'https://staging.whooshing.xyz/api/v1';
 
-const DeliverySetup = ({ productData }: any) => {
-  const show = useAppSelector(selectGlobal);
-  const { handleShow } = useGlobalHooks();
+const DeliverySetup: React.FC<IModal> = ({
+  productData,
+  onNext,
+  onPrevious,
+}) => {
+  // const show = useAppSelector(selectGlobal);
+  // const { handleShow } = useGlobalHooks();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
   const { dropoffDetails } = useAppSelector(SelectStepperForms);
@@ -72,7 +85,7 @@ const DeliverySetup = ({ productData }: any) => {
     latitude: '6.6075419',
     longitude: '3.3498675',
   };
-  const [orderedData, setOrderedData] = useState<IOrder>({} as IOrder);
+  // const [orderedData, setOrderedData] = useState<IOrder>({} as IOrder);
 
   const onSubmit = async (formData: any) => {
     setLoading(true);
@@ -114,8 +127,16 @@ const DeliverySetup = ({ productData }: any) => {
 
       const data = await response.json();
 
-      setOrderedData(data?.data);
-      handleShow('success');
+      // setOrderedData(data?.data);
+      // handleShow('success');
+
+      const getDeets = {
+        ...productData,
+        deliveryInfo: formData,
+        serverRsp: data,
+      };
+      dispatch(updateOrderedData(getDeets));
+      onNext();
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -139,8 +160,15 @@ const DeliverySetup = ({ productData }: any) => {
   return (
     <>
       <form className='deliverySetup' onSubmit={handleSubmit}>
+        <header className='mb-4'>
+          <h1>Send and Receive</h1>
+        </header>
+
+        <hr />
+
         <article className=' my-5'>
-          <section className='flex flex-wrap gap-3 justify-between mt-2'>
+          <h3>Please enter your delivery information</h3>
+          <section className='flex flex-wrap gap-3 justify-between mt-4'>
             <article className='inputWrapper'>
               <FormInput
                 id='first_name'
@@ -197,13 +225,16 @@ const DeliverySetup = ({ productData }: any) => {
         </article>
 
         <section className='flex items-center justify-between mt-9'>
+          <button onClick={onPrevious} className='outline-btn'>
+            PREVIOUS
+          </button>{' '}
           <button disabled={loading} className='main-btn' type='submit'>
-            {loading ? 'Processing...' : 'Buy Now'}
+            {loading ? 'Processing...' : 'CONTINUE'}
           </button>
         </section>
       </form>
 
-      {show['success'] && (
+      {/* {show['success'] && (
         <Success
           id='success'
           close={() => handleShow('success')}
@@ -211,7 +242,7 @@ const DeliverySetup = ({ productData }: any) => {
           vat={orderedData?.vat}
           total={orderedData?.total}
         />
-      )}
+      )} */}
     </>
   );
 };

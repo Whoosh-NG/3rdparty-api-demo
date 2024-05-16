@@ -2,8 +2,9 @@ import { productData } from '@/components/AllData';
 import { FaRegClock } from 'react-icons/fa';
 import { Link, useParams } from 'react-router-dom';
 import './style.scss';
-import DeliverySetup from '@/components/DeliverySetup';
+// import DeliverySetup from '@/components/DeliverySetup';
 import GoBackBtn from '@/components/GoBackBtn';
+import StepForm from '@/components/OnboardingComps/StepForms/StepForm';
 
 const Products = () => {
   const params = useParams();
@@ -50,9 +51,12 @@ const Products = () => {
         </article>
 
         <aside className='w-full md:w-[58%]'>
+          <StepForm data={productDeets} />
+        </aside>
+        {/* <aside className='w-full md:w-[58%]'>
           <h3> Enter your delivery information</h3>
           <DeliverySetup productData={productDeets} />
-        </aside>
+        </aside> */}
       </section>
     </main>
   );

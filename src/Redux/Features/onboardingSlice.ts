@@ -17,6 +17,7 @@ const onboardingSlice = createSlice({
       bankDetails: {} as IBankDetails,
       // list of boolean keys
       productCatIsAdded: {} as { [key: string]: boolean },
+      orderedData: {} as any,
     },
     fileName: '',
     onboarded: false,
@@ -26,6 +27,9 @@ const onboardingSlice = createSlice({
   reducers: {
     updatePickup: (state, action) => {
       state.stepperForms.pickupDetails = action.payload;
+    },
+    updateOrderedData: (state, action) => {
+      state.stepperForms.orderedData = action.payload;
     },
 
     saveFileName: (state, action) => {
@@ -67,6 +71,7 @@ export const {
   updateSessionDuration,
   updateIsAdded,
   updateBankDetails,
+  updateOrderedData,
 } = onboardingSlice.actions;
 
 export const SelectStepperForms = (state: RootState) =>

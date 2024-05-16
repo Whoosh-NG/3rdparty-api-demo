@@ -39,7 +39,7 @@ const Step3: React.FC<IStepForm> = ({ onNext, onPrevious }) => {
 
   const onSubmit = (formData: any) => {
     dispatch(updatePickup(formData));
-    onNext();
+    onNext && onNext();
   };
   console.log(pickupDetails);
   const reduxStoreetup = Object.keys(pickupDetails).length > 0 && pickupDetails;
