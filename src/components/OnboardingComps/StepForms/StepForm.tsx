@@ -5,16 +5,12 @@ import {
   PiNumberCircleOne,
   PiNumberCircleTwo,
   PiNumberCircleThree,
-  PiNumberCircleFour,
-  PiNumberCircleFive,
 } from 'react-icons/pi';
-import Step1 from './Step1/Step1';
 import Step2 from './Step2/Step2';
-import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
-import Step5 from './Step5/Step5';
+import DeliverySetup from '@/components/DeliverySetup';
 
-const StepForm = () => {
+const StepForm = ({ data }: { data: any }) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const StepLabels = [
@@ -24,8 +20,6 @@ const StepForm = () => {
       icon: <PiNumberCircleTwo />,
     },
     { title: 'Step3', icon: <PiNumberCircleThree /> },
-    { title: 'Step4', icon: <PiNumberCircleFour /> },
-    { title: 'Step5', icon: <PiNumberCircleFive /> },
   ];
 
   const handleNext = () => {
@@ -41,19 +35,15 @@ const StepForm = () => {
       </aside>
       <section className=' '>
         <article className='my-[60px]'>
-          {currentStep === 0 && <Step1 onNext={handleNext} />}
+          {currentStep === 0 && <Step2 onNext={handleNext} />}
           {currentStep === 1 && (
-            <Step2 onPrevious={handlePrevious} onNext={handleNext} />
+            <DeliverySetup
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              productData={data}
+            />
           )}
-          {currentStep === 2 && (
-            <Step3 onPrevious={handlePrevious} onNext={handleNext} />
-          )}
-          {currentStep === 3 && (
-            <Step4 onPrevious={handlePrevious} onNext={handleNext} />
-          )}
-          {currentStep === 4 && (
-            <Step5 onPrevious={handlePrevious} onNext={handleNext} />
-          )}
+          {currentStep === 2 && <Step4 onPrevious={handlePrevious} />}
         </article>
       </section>
     </main>

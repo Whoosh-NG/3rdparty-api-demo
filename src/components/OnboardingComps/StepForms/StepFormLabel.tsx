@@ -8,7 +8,7 @@ interface Ilabels {
 
 const StepFormLabel: React.FC<Ilabels> = ({ stepLabels, currentStep }) => {
   return (
-    <ul className='stepLabels flex justify-between border-b-[1px]'>
+    <ul className='stepLabels flex gap-3 border-b-[1px]'>
       {stepLabels.map(({ title, icon }, index: number) => (
         <li
           key={index}
